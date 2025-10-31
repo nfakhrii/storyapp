@@ -29,7 +29,6 @@
   --radius-xl: 1rem;
 }
 
-/* View Transitions API */
 @view-transition {
   navigation: auto;
 }
@@ -47,7 +46,6 @@
   animation: 0.4s cubic-bezier(0.4, 0, 0.2, 1) both slide-in-from-right;
 }
 
-/* Reverse animation for back navigation */
 .back-transition::view-transition-old(root) {
   animation: 0.4s cubic-bezier(0.4, 0, 0.2, 1) both slide-out-to-right;
 }
@@ -56,7 +54,6 @@
   animation: 0.4s cubic-bezier(0.4, 0, 0.2, 1) both slide-in-from-left;
 }
 
-/* View Transition Animations */
 @keyframes slide-in-from-right {
   from {
     opacity: 0;
@@ -101,7 +98,6 @@
   }
 }
 
-/* Named view transitions for specific elements */
 .story-card {
   view-transition-name: none;
 }
@@ -118,7 +114,6 @@
   view-transition-name: auth-page;
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
@@ -146,7 +141,6 @@ body {
   width: 100%;
 }
 
-/* Skip to Content */
 .skip-to-content {
   position: absolute;
   top: -40px;
@@ -169,7 +163,6 @@ body {
   outline-offset: 2px;
 }
 
-/* Header */
 header {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   position: fixed;
@@ -221,7 +214,6 @@ header {
   width: 100%;
 }
 
-/* Notification Button - FIXED FOR MOBILE */
 .notification-button {
   display: flex;
   align-items: center;
@@ -265,14 +257,12 @@ header {
   transform: none;
 }
 
-/* Header Actions */
 .header-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-/* Main Content */
 main {
   flex: 1;
   padding-top: 100px;
@@ -280,7 +270,6 @@ main {
   view-transition-name: main-content;
 }
 
-/* Footer */
 footer {
   background: linear-gradient(135deg, var(--text-primary), #0f172a);
   color: var(--surface-color);
@@ -301,7 +290,6 @@ footer p {
   opacity: 0.9;
 }
 
-/* Navigation */
 .navigation-drawer {
   min-height: 100vh;
   width: 280px;
@@ -384,7 +372,6 @@ footer p {
   box-shadow: var(--shadow-md);
 }
 
-/* Button Styles */
 .btn {
   padding: 0.75rem 1.5rem;
   border: none;
@@ -463,7 +450,6 @@ footer p {
   opacity: 0.6;
 }
 
-/* Responsive Navigation */
 @media screen and (width > 1000px) {
   .navigation-drawer {
     min-height: auto;
@@ -498,7 +484,6 @@ footer p {
   }
 }
 
-/* Legacy Animations (Fallback) */
 @keyframes pageEnter {
   from { 
     opacity: 0; 
@@ -529,7 +514,6 @@ footer p {
   animation: pageExit 0.3s ease forwards;
 }
 
-/* Focus Styles */
 a:focus,
 button:focus,
 .story-card:focus,
@@ -542,7 +526,6 @@ select:focus {
   border-radius: var(--radius-sm);
 }
 
-/* Map Styles */
 #map {
   width: 100%;
   height: 60vh;
@@ -571,7 +554,6 @@ select:focus {
   box-shadow: var(--shadow-lg);
 }
 
-/* Auth Pages */
 .auth-page {
   max-width: 440px;
   margin: 2rem auto;
@@ -660,7 +642,6 @@ select:focus {
   box-shadow: none;
 }
 
-/* Stories Grid */
 .stories-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -780,7 +761,6 @@ select:focus {
   width: 100%;
 }
 
-/* Story Detail */
 .story-detail-card {
   background: var(--surface-color);
   border-radius: var(--radius-xl);
@@ -869,7 +849,6 @@ select:focus {
   box-shadow: var(--shadow-md);
 }
 
-/* Forms */
 .story-form {
   display: flex;
   flex-direction: column;
@@ -932,7 +911,6 @@ select:focus {
   transform: translateY(-1px);
 }
 
-/* Form Elements */
 .form-help-container {
   display: flex;
   justify-content: space-between;
@@ -960,7 +938,6 @@ select:focus {
   font-size: 0.9rem;
 }
 
-/* Fieldset Styles */
 .story-form fieldset {
   border: 2px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -1078,7 +1055,6 @@ select:focus {
   box-shadow: none;
 }
 
-/* Install Button - FIXED */
 #btnInstall {
   margin-left: 1rem;
   padding: 0.75rem 1.5rem;
@@ -1121,7 +1097,6 @@ select:focus {
   display: none !important;
 }
 
-/* Utility Classes */
 .success {
   color: var(--success-color);
   background: rgba(16, 185, 129, 0.1);
@@ -1396,7 +1371,6 @@ select:focus {
   box-shadow: none;
 }
 
-/* Mobile Responsive Fixes */
 @media (max-width: 768px) {
   .container {
     padding-inline: 1rem;
@@ -1454,7 +1428,6 @@ select:focus {
     justify-content: center;
   }
   
-  /* FIX: Ensure notification button is visible on mobile */
   .notification-button {
     display: flex !important;
     opacity: 1 !important;
@@ -1507,7 +1480,6 @@ select:focus {
     font-size: 0.8rem;
   }
   
-  /* FIX: Mobile notification button sizing */
   .notification-button {
     min-width: 40px;
     min-height: 40px;
@@ -1622,7 +1594,6 @@ select:focus {
   height: 300px;
 }
 
-/* Samakan <a> dan <button> sebagai item menu di drawer */
 .nav-list li a,
 .nav-list li button {
   display: block;
@@ -1633,10 +1604,9 @@ select:focus {
   align-items: center;
 }
 
-/* Khusus tombol push di dalam drawer: pakai latar terang & teks gelap */
 .navigation-drawer .nav-list #push-toggle-btn {
   width: 100%;
-  text-align: left;          /* biar seragam dengan <a> */
+  text-align: left;
   font: inherit;
   background: var(--brand-50, #e0f2fe);
   color: var(--text-primary, #1e293b);
