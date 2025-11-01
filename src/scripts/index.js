@@ -33,26 +33,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 if ('serviceWorker' in navigator) {
-  if (process.env.NODE_ENV === 'production') {
-    window.addEventListener('load', () => {
-      const basePath = location.pathname.endsWith('/')
-        ? location.pathname
-        : location.pathname.replace(/[^/]+$/, '');
+  window.addEventListener('load', () => {
+    const basePath = location.pathname.endsWith('/')
+      ? location.pathname
+      : location.pathname.replace(/[^/]+$/, '');
 
-      navigator.serviceWorker
-        .register(`${basePath}sw.bundle.js`, { scope: basePath })
-        .catch((err) => {
-          console.error('[SW] register failed:', err);
-        });
-    });
-  } else {
-    navigator.serviceWorker.getRegistrations?.().then((regs) => {
-      regs.forEach((r) => r.unregister());
-    });
-    if (window.caches?.keys) {
-      caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
-    }
-  }
+    navigator.serviceWorker
+      .register(`${basePath}sw.bundle.js`, { scope: basePath })
+      .catch((err) => console.error('[SW] register failed:', err));
+  });
 
   navigator.serviceWorker.addEventListener('message', (evt) => {
     const { type, url } = (evt.data) || {};

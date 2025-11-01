@@ -7,17 +7,26 @@ export default class SavedView {
         <h1 tabindex="0">Offline Saves</h1>
 
         <div class="toolbar">
-          <input 
-            id="saved-search" 
-            placeholder="Cari story..." 
-            aria-label="Cari story offline" 
+          <!-- Label eksplisit untuk input search -->
+          <label for="saved-search" class="visually-hidden">Cari story offline</label>
+          <input
+            id="saved-search"
+            type="search"
+            placeholder="Cari story..."
+            autocomplete="off"
           />
-          <select id="saved-sort" aria-label="Urutkan story">
+
+          <!-- Label eksplisit untuk select sort -->
+          <label for="saved-sort" class="visually-hidden">Urutkan story</label>
+          <select id="saved-sort">
             <option value="newest">Terbaru</option>
             <option value="oldest">Terlama</option>
             <option value="name">Nama (A–Z)</option>
           </select>
-          <select id="saved-filter" aria-label="Filter berdasarkan lokasi">
+
+          <!-- Label eksplisit untuk select filter -->
+          <label for="saved-filter" class="visually-hidden">Filter berdasarkan lokasi</label>
+          <select id="saved-filter">
             <option value="all">Semua Story</option>
             <option value="withLoc">Dengan lokasi</option>
             <option value="noLoc">Tanpa lokasi</option>
@@ -39,7 +48,7 @@ export default class SavedView {
       `;
       return;
     }
-    
+
     list.innerHTML = items.map(s => `
       <article class="story-card">
         <img src="${s.photoUrl}" alt="Foto story ${s.name}" loading="lazy"/>
@@ -58,18 +67,18 @@ export default class SavedView {
     `).join('');
   }
 
-  onSearch(cb){ 
-    document.getElementById('saved-search')?.addEventListener('input', e => cb(e.target.value)); 
+  onSearch(cb){
+    document.getElementById('saved-search')?.addEventListener('input', e => cb(e.target.value));
   }
-  
-  onSort(cb){ 
-    document.getElementById('saved-sort')?.addEventListener('change', e => cb(e.target.value)); 
+
+  onSort(cb){
+    document.getElementById('saved-sort')?.addEventListener('change', e => cb(e.target.value));
   }
-  
-  onFilter(cb){ 
-    document.getElementById('saved-filter')?.addEventListener('change', e => cb(e.target.value)); 
+
+  onFilter(cb){
+    document.getElementById('saved-filter')?.addEventListener('change', e => cb(e.target.value));
   }
-  
+
   onDelete(cb){
     document.getElementById('saved-list')?.addEventListener('click', (e) => {
       const id = e.target?.dataset?.del;
