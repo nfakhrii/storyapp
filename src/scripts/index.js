@@ -5,31 +5,52 @@ import { isSubscribed, subscribePush, unsubscribePush } from './utils/push-manag
 import AuthModel from './data/auth-model';
 import { flushOutboxIfAny } from './data/api.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
+if (!location.hash) location.replace('#/');
+
+document.addEventListener('DOMContentLoaded', () => {
   const app = new App({
     content: document.querySelector('#main-content'),
     drawerButton: document.querySelector('#drawer-button'),
     navigationDrawer: document.querySelector('#navigation-drawer'),
   });
 
-  await app.renderPage();
+  let lastRoute = null;
+  let rafId = null;
 
-  window.addEventListener('hashchange', async () => {
-    await app.renderPage();
-  });
+  const safeRender = (force = false) => {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(async () => {
+      const route = location.hash || '#/';
+      if (!force && route === lastRoute) return;
+      lastRoute = route;
+      await app.renderPage();
+    });
+  };
+
+  safeRender();
+  window.addEventListener('hashchange', () => safeRender());
 
   if (navigator.onLine) {
     flushOutboxIfAny().catch((err) => console.error('Flush on load failed:', err));
   }
-
   window.addEventListener('online', async () => {
-    try {
-      await flushOutboxIfAny();
-    } catch (err) {
-      console.error('Gagal flush outbox saat online:', err);
-    }
+    try { await flushOutboxIfAny(); }
+    catch (err) { console.error('Gagal flush outbox saat online:', err); }
     navigator.serviceWorker?.controller?.postMessage?.({ type: 'FLUSH_OUTBOX' });
   });
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', (evt) => {
+      const { type, url } = evt.data || {};
+      if (type === 'NAVIGATE' && url) {
+        location.href = url;
+      } else if (type === 'REFRESH_HOME') {
+        safeRender(true);
+      }
+    });
+  }
+
+  initPushToggle();
 });
 
 if ('serviceWorker' in navigator) {
@@ -41,17 +62,6 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register(`${basePath}sw.bundle.js`, { scope: basePath })
       .catch((err) => console.error('[SW] register failed:', err));
-  });
-
-  navigator.serviceWorker.addEventListener('message', (evt) => {
-    const { type, url } = (evt.data) || {};
-    if (type === 'NAVIGATE' && url) {
-      location.href = url;
-    } else if (type === 'REFRESH_HOME') {
-      if (location.hash === '#/' || location.hash === '') {
-        window.dispatchEvent(new HashChangeEvent('hashchange'));
-      }
-    }
   });
 }
 
@@ -73,7 +83,6 @@ async function initPushToggle() {
         : (!online ? 'Enable Notifications (butuh koneksi)' : 'Enable Notifications (login dulu)');
       return;
     }
-
     btn.textContent = (await isSubscribed()) ? 'Disable Notifications' : 'Enable Notifications';
   };
 
@@ -85,12 +94,11 @@ async function initPushToggle() {
         alert('Butuh koneksi internet untuk mengubah status notifikasi.');
         return;
       }
+      btn.disabled = true;
       if (await isSubscribed()) {
-        btn.disabled = true;
         btn.textContent = 'Unsubscribing...';
         await unsubscribePush();
       } else {
-        btn.disabled = true;
         btn.textContent = 'Subscribing...';
         await subscribePush();
       }
@@ -107,4 +115,3 @@ async function initPushToggle() {
   window.addEventListener('online', updateState);
   window.addEventListener('offline', updateState);
 }
-initPushToggle();

@@ -6,7 +6,7 @@ export default class SavedView {
       <section class="container" id="saved-page">
         <h1 tabindex="0">Offline Saves</h1>
 
-        <div class="toolbar">
+        <div class="toolbar" role="group" aria-label="Kontrol pencarian dan pengurutan">
           <!-- Label eksplisit untuk input search -->
           <label for="saved-search" class="visually-hidden">Cari story offline</label>
           <input
@@ -14,11 +14,12 @@ export default class SavedView {
             type="search"
             placeholder="Cari story..."
             autocomplete="off"
+            aria-controls="saved-list"
           />
 
           <!-- Label eksplisit untuk select sort -->
           <label for="saved-sort" class="visually-hidden">Urutkan story</label>
-          <select id="saved-sort">
+          <select id="saved-sort" aria-controls="saved-list">
             <option value="newest">Terbaru</option>
             <option value="oldest">Terlama</option>
             <option value="name">Nama (A–Z)</option>
@@ -26,7 +27,7 @@ export default class SavedView {
 
           <!-- Label eksplisit untuk select filter -->
           <label for="saved-filter" class="visually-hidden">Filter berdasarkan lokasi</label>
-          <select id="saved-filter">
+          <select id="saved-filter" aria-controls="saved-list">
             <option value="all">Semua Story</option>
             <option value="withLoc">Dengan lokasi</option>
             <option value="noLoc">Tanpa lokasi</option>
@@ -59,7 +60,7 @@ export default class SavedView {
         </div>
         <div class="actions">
           <a class="btn btn-secondary" href="#/stories/${s.id}">Lihat Detail</a>
-          <button class="btn btn-danger" data-del="${s.id}" aria-label="Hapus story ${s.name}">
+          <button class="btn btn-danger" type="button" data-del="${s.id}" aria-label="Hapus story ${s.name}">
             Hapus
           </button>
         </div>
@@ -68,21 +69,25 @@ export default class SavedView {
   }
 
   onSearch(cb){
-    document.getElementById('saved-search')?.addEventListener('input', e => cb(e.target.value));
+    document.getElementById('saved-search')
+      ?.addEventListener('input', e => cb(e.target.value));
   }
 
   onSort(cb){
-    document.getElementById('saved-sort')?.addEventListener('change', e => cb(e.target.value));
+    document.getElementById('saved-sort')
+      ?.addEventListener('change', e => cb(e.target.value));
   }
 
   onFilter(cb){
-    document.getElementById('saved-filter')?.addEventListener('change', e => cb(e.target.value));
+    document.getElementById('saved-filter')
+      ?.addEventListener('change', e => cb(e.target.value));
   }
 
   onDelete(cb){
-    document.getElementById('saved-list')?.addEventListener('click', (e) => {
-      const id = e.target?.dataset?.del;
-      if (id) cb(id);
-    });
+    document.getElementById('saved-list')
+      ?.addEventListener('click', (e) => {
+        const id = e.target?.dataset?.del;
+        if (id) cb(id);
+      });
   }
 }
